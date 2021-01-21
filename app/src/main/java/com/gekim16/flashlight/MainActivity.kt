@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraManager : CameraManager
     private var cameraId: String? = null
     private var thread : Thread? = null
+    private val seekBarMax : Int by lazy { seekBar.max }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                     blinkFlash(-1)
                 }
                 OFF ->{
-                    blinkFlash((seekBar.max - seekBar.progress))
+                    blinkFlash((seekBarMax - seekBar.progress))
                 }
             }
         }
@@ -46,13 +47,13 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                 if(state == ON)
-                    blinkFlash(seekBar?.max ?: return)
+                    blinkFlash(seekBarMax)
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 if(seekBar == null) return
                 if(state == ON)
-                    blinkFlash((seekBar.max - seekBar.progress))
+                    blinkFlash((seekBarMax - seekBar.progress))
             }
         })
     }
@@ -76,20 +77,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun flashLightOn(){
-        state = if(cameraId == null) return else ON
-        cameraManager.setTorchMode(cameraId!!,true)
+        cameraId?.let {
+            state = ON
+            cameraManager.setTorchMode(it,true)
+        }
     }
 
     private fun flashLightOff(){
-        state = if(cameraId == null) return else OFF
-        cameraManager.setTorchMode(cameraId!!, false)
+        cameraId?.let {
+            state = OFF
+            cameraManager.setTorchMode(it,false)
+        }
     }
 
     private fun blinkFlash(frequency: Int) {
         thread?.interrupt()
         thread = null
 
-        if(frequency == seekBar.max) {
+        if(frequency == seekBarMax) {
             flashLightOn()
             return
         }
