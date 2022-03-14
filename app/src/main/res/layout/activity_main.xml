@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#555"
-    tools:context=".MainActivity">
+<layout>
 
-    <ImageButton
-        android:id="@+id/flashButton"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:scaleType="centerInside"
-        android:background="@android:color/transparent"
-        android:src="@drawable/button_image"
-        android:contentDescription="Flashlight button" />
+    <data>
+        <import type="com.gekim16.flashlight.MainViewModel"/>
+        <variable
+            name="viewModel"
+            type="com.gekim16.flashlight.MainViewModel" />
+        <variable
+            name="state"
+            type="boolean" />
+    </data>
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="300dp"
-        android:layout_height="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/flashButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.3"
-        />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#555"
+        tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/flashButton"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"
+            android:src="@drawable/button_image"
+            android:onClick="@{() -> viewModel.setState()}"
+            android:contentDescription="Flashlight button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
